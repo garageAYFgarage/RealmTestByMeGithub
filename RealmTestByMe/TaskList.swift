@@ -14,4 +14,3 @@ class TaskList: Object {
     let tasks = List<Task>()
 }
 
-
