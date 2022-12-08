@@ -1,29 +1,31 @@
 //
-//  TableViewModel.swift
+//  TasksViewModel.swift
 //  RealmTestByMe
 //
-//  Created by iFARA💻 on 15.11.2022.
+//  Created by iFARA💻 on 02.12.2022.
 //
 
 import Foundation
 import RealmSwift
 
-protocol TableViewModelProtocol {
+protocol TasksViewModelProtocol {
     
-    var numberOfRows: Int { get }
-    var dataSource: Results<TaskList>? { get set }
+
+    var dataSource: Results<Task>? { get set }
     
     func getCellTitle(at indexPath: IndexPath) -> String
     func selectedElement(at indexPath: IndexPath) -> String
     
 }
 
-final class TableViewModel: TableViewModelProtocol {
+
+final class TasksViewModel: TasksViewModelProtocol {
     
-    var dataSource: Results<TaskList>?
+    
+    var dataSource: Results<Task>?
     
     init() {
-        self.dataSource = realm.objects(TaskList.self)
+        self.dataSource = realm.objects(Task.self)
     }
     
     var numberOfRows: Int {
@@ -31,11 +33,11 @@ final class TableViewModel: TableViewModelProtocol {
     }
     
     func getCellTitle(at indexPath: IndexPath) -> String {
-        "\(dataSource?[indexPath.row].name ?? "")"    }
+        "\(dataSource?[indexPath.row].name ?? "")"
+    }
     
     func selectedElement(at indexPath: IndexPath) -> String {
         "\(dataSource?[indexPath.row].name ?? "")"
     }
-    
 }
 
