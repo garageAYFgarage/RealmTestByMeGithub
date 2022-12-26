@@ -37,35 +37,35 @@ class TaskListViewController: UIViewController {
         
         
         //MARK: - REALM
-//        taskLists = realm.objects(TaskList.self)
-//
-//        let shoppingList = TaskList()
-//        shoppingList.name = "Shopping List 🥁"
-//        let milk = Task()
-//        milk.name = "Milk🥛"
-//        milk.note = "2 litre"
-//        let bread = Task()
-//        bread.name = "Bread🍞"
-//        bread.note = "5 unit"
-//        let apples = Task()
-//        apples.name = "Apple🍏"
-//        apples.note = "15 unit"
-//
-//        let moviesList = TaskList(value: ["Movies List 🎬", Date(), [["Best Movie Ever1️⃣"], ["Best Of The Best Movie Ever0️⃣", "", Date(), false]]])
-//
-//        let carList = TaskList()
-//        carList.name = "Car List 🚗"
-//        let car = Task()
-//        car.name = "ACURA🏎"
-//        car.note = "RL"
-//        carList.tasks.append(car)
-//
-//        shoppingList.tasks.append(milk)
-//        shoppingList.tasks.insert(contentsOf: [bread, apples], at: 1)
-//
-//        DispatchQueue.main.async {
-//            StorageManager.shared.saveTaskLists([carList, shoppingList, moviesList])
-//        }
+        taskLists = realm.objects(TaskList.self)
+
+        let shoppingList = TaskList()
+        shoppingList.name = "Shopping List 🥁"
+        let milk = Task()
+        milk.name = "Milk🥛"
+        milk.note = "2 litre"
+        let bread = Task()
+        bread.name = "Bread🍞"
+        bread.note = "5 unit"
+        let apples = Task()
+        apples.name = "Apple🍏"
+        apples.note = "15 unit"
+
+        let moviesList = TaskList(value: ["Movies List 🎬", Date(), [["Best Movie Ever1️⃣"], ["Best Of The Best Movie Ever0️⃣", "", Date(), false]]])
+
+        let carList = TaskList()
+        carList.name = "Car List 🚗"
+        let car = Task()
+        car.name = "ACURA🏎"
+        car.note = "RL"
+        carList.tasks.append(car)
+
+        shoppingList.tasks.append(milk)
+        shoppingList.tasks.insert(contentsOf: [bread, apples], at: 1)
+
+        DispatchQueue.main.async {
+            StorageManager.shared.saveTaskLists([carList, shoppingList, moviesList])
+        }
 
 
         
