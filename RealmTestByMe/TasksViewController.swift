@@ -9,20 +9,12 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class TasksViewController: UITableViewController {
+final class TasksViewController: UITableViewController {
     
     var delegate: TaskListViewController?
-    
     var currentList: TaskList!
-    
     var currentTasks: Results<Task>!
     var completedTasks: Results<Task>!
-    
-    
-//    func printTaskList() {
-//        print(currentList)
-//    }
-
     
     //MARK: - Properties
     private let viewModelTasks: TasksViewModelProtocol
@@ -40,15 +32,11 @@ class TasksViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TasksCell")
-        
-//        printTaskList()
-
-        title = currentList.name
-        view.backgroundColor = .green
-        
+                
         currentTasks = currentList.tasks.filter("isComplete == false")
         completedTasks = currentList.tasks.filter("isComplete == true")
         
+        setupUI()
         configureItems()
         
     }
@@ -56,7 +44,7 @@ class TasksViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         2
     }
-//
+     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         section == 0 ? currentTasks.count : completedTasks.count
     }
@@ -74,6 +62,11 @@ class TasksViewController: UITableViewController {
         return cell
     }
     
+    private func setupUI() {
+        title = currentList.name
+        view.backgroundColor = .green
+    }
+    
     private func configureItems() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
@@ -81,31 +74,6 @@ class TasksViewController: UITableViewController {
             action: #selector(didTapButton)
         )
     }
-//    @objc private func didTapButton() {
-//        let alert = UIAlertController(title: "New List", message: "Please insert new value", preferredStyle: .alert)
-//
-//        alert.addTextField { field in
-//            field.placeholder = "List Name"
-//        }
-//        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { (_) in
-//            if let field = alert.textFields?.first {
-//                if let text = field.text, !text.isEmpty {
-//                    let shoppingList = TaskList()
-//                    shoppingList.name = text
-//                    DispatchQueue.main.async {
-//                        StorageManager.shared.saveTaskList(shoppingList)
-//                        self.tableView.reloadData()
-//                    }
-//
-//                    print(text)
-//
-//                }
-//            }
-//        }))
-//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-//
-//                                        present(alert, animated: true)
-//                                        }
     
     @objc private func didTapButton() {
         let alert = UIAlertController(title: "New Task", message: "Please insert new value", preferredStyle: .alert)
@@ -118,20 +86,11 @@ class TasksViewController: UITableViewController {
                 if let text = field.text, !text.isEmpty {
                     let newTask = Task()
                     newTask.name = text
-                    //self.currentList.tasks.insert(contentsOf: [newTask], at: 0)
                     DispatchQueue.main.async {
-                        //self.currentList.tasks.append(newTask)
-                        
-                        
                         StorageManager.shared.update(self.currentList, newTask)
-                        //StorageManager.shared.saveTaskList(self.currentList)
-                        
-                        
                         self.tableView.reloadData()
                     }
-                    
                     print(text)
-                    
                 }
             }
         }))

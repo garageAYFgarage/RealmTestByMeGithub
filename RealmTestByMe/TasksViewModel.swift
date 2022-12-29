@@ -9,18 +9,13 @@ import Foundation
 import RealmSwift
 
 protocol TasksViewModelProtocol {
-    
-
-    var dataSource: Results<Task>? { get set }
-    
+        
     func getCellTitle(at indexPath: IndexPath) -> String
     func selectedElement(at indexPath: IndexPath) -> String
     
 }
 
-
 final class TasksViewModel: TasksViewModelProtocol {
-    
     
     var dataSource: Results<Task>?
     

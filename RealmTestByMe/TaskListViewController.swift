@@ -9,9 +9,7 @@ import UIKit
 import SnapKit
 import RealmSwift
 
-class TaskListViewController: UIViewController {
-    
-    var taskLists: Results<TaskList>?
+final class TaskListViewController: UIViewController {
     
     //MARK: - UIElements
     private let tableView: UITableView = {
@@ -35,47 +33,12 @@ class TaskListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        //MARK: - REALM
-        taskLists = realm.objects(TaskList.self)
-
-        let shoppingList = TaskList()
-        shoppingList.name = "Shopping List 🥁"
-        let milk = Task()
-        milk.name = "Milk🥛"
-        milk.note = "2 litre"
-        let bread = Task()
-        bread.name = "Bread🍞"
-        bread.note = "5 unit"
-        let apples = Task()
-        apples.name = "Apple🍏"
-        apples.note = "15 unit"
-
-        let moviesList = TaskList(value: ["Movies List 🎬", Date(), [["Best Movie Ever1️⃣"], ["Best Of The Best Movie Ever0️⃣", "", Date(), false]]])
-
-        let carList = TaskList()
-        carList.name = "Car List 🚗"
-        let car = Task()
-        car.name = "ACURA🏎"
-        car.note = "RL"
-        carList.tasks.append(car)
-
-        shoppingList.tasks.append(milk)
-        shoppingList.tasks.insert(contentsOf: [bread, apples], at: 1)
-
-        DispatchQueue.main.async {
-            StorageManager.shared.saveTaskLists([carList, shoppingList, moviesList])
-        }
-
-
-        
         setupUI()
         setupLayout()
-
         configureItems()
+        
     }
 
-    //MARK: -  Private Helpers
     //MARK: - Layout
     private func setupUI() {
         view.backgroundColor = .purple
@@ -83,6 +46,7 @@ class TaskListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .clear
+        
         navigationController?.navigationBar.backgroundColor = .blue
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Task List"
@@ -91,14 +55,10 @@ class TaskListViewController: UIViewController {
     private func setupLayout() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.edges.equalToSuperview()
         }
-
-
     }
+    
     private func configureItems() {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
@@ -106,6 +66,7 @@ class TaskListViewController: UIViewController {
             action: #selector(didTapButton)
         )
     }
+    
     @objc private func didTapButton() {
         let alert = UIAlertController(title: "New List", message: "Please insert new value", preferredStyle: .alert)
         
@@ -131,9 +92,6 @@ class TaskListViewController: UIViewController {
                                         
                                         present(alert, animated: true)
                                         }
-    
-  
-    
 }
 
 //MARK: - Extensions
@@ -149,12 +107,10 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
         let viewModelTasks = TasksViewModel()
         let tasksVC = TasksViewController(viewModelTasks: viewModelTasks)
         tasksVC.currentList = viewModel.dataSource?[indexPath.row]
         navigationController?.pushViewController(tasksVC, animated: true)
-        
     }
 }
 

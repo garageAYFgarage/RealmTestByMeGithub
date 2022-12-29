@@ -20,7 +20,8 @@ protocol TableViewModelProtocol {
 
 final class TableViewModel: TableViewModelProtocol {
     
-    var dataSource: Results<TaskList>?
+    var taskLists: Results<TaskList>?
+    var dataSource: Results<TaskList>? 
     
     init() {
         self.dataSource = realm.objects(TaskList.self)
@@ -36,6 +37,7 @@ final class TableViewModel: TableViewModelProtocol {
     func selectedElement(at indexPath: IndexPath) -> String {
         "\(dataSource?[indexPath.row].name ?? "")"
     }
-    
+
 }
+
 

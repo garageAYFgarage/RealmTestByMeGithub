@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		8F5E32696498D6D22EE373AC /* Pods_RealmTestByMe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81B1099149852D6AFDF632AA /* Pods_RealmTestByMe.framework */; };
 		DA21F227293A283000723A4F /* TasksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA21F226293A283000723A4F /* TasksViewModel.swift */; };
-		DA21F22B293F64AD00723A4F /* SecondTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA21F22A293F64AD00723A4F /* SecondTableViewController.swift */; };
-		DA21F22D293F76D400723A4F /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA21F22C293F76D400723A4F /* SecondViewController.swift */; };
 		DA8C855B292373C00016D814 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8C855A292373C00016D814 /* AppDelegate.swift */; };
 		DA8C855D292373C00016D814 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8C855C292373C00016D814 /* SceneDelegate.swift */; };
 		DA8C855F292373C00016D814 /* TaskListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8C855E292373C00016D814 /* TaskListViewController.swift */; };
@@ -29,8 +27,6 @@
 		81B1099149852D6AFDF632AA /* Pods_RealmTestByMe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RealmTestByMe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD99C2ADD6D2CB9DBDFE41B8 /* Pods-RealmTestByMe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RealmTestByMe.release.xcconfig"; path = "Target Support Files/Pods-RealmTestByMe/Pods-RealmTestByMe.release.xcconfig"; sourceTree = "<group>"; };
 		DA21F226293A283000723A4F /* TasksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksViewModel.swift; sourceTree = "<group>"; };
-		DA21F22A293F64AD00723A4F /* SecondTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SecondTableViewController.swift; path = ../../../../Development/projects/RealmTestByMeGithub/RealmTestByMe/SecondTableViewController.swift; sourceTree = "<group>"; };
-		DA21F22C293F76D400723A4F /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SecondViewController.swift; path = ../../../../Development/projects/RealmTestByMeGithub/RealmTestByMe/SecondViewController.swift; sourceTree = "<group>"; };
 		DA8C8557292373C00016D814 /* RealmTestByMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RealmTestByMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA8C855A292373C00016D814 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA8C855C292373C00016D814 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -108,8 +104,6 @@
 				DA8C8577292386650016D814 /* TaskList.swift */,
 				DA8C8575292380520016D814 /* Task.swift */,
 				DA8C857929238CE20016D814 /* StorageManager.swift */,
-				DA21F22A293F64AD00723A4F /* SecondTableViewController.swift */,
-				DA21F22C293F76D400723A4F /* SecondViewController.swift */,
 			);
 			path = RealmTestByMe;
 			sourceTree = "<group>";
@@ -234,7 +228,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA21F22D293F76D400723A4F /* SecondViewController.swift in Sources */,
 				DA8C8578292386650016D814 /* TaskList.swift in Sources */,
 				DA8C855F292373C00016D814 /* TaskListViewController.swift in Sources */,
 				DA8C855B292373C00016D814 /* AppDelegate.swift in Sources */,
@@ -242,7 +235,6 @@
 				DA21F227293A283000723A4F /* TasksViewModel.swift in Sources */,
 				DA8C855D292373C00016D814 /* SceneDelegate.swift in Sources */,
 				DA8C8576292380520016D814 /* Task.swift in Sources */,
-				DA21F22B293F64AD00723A4F /* SecondTableViewController.swift in Sources */,
 				DA8C857229237CB30016D814 /* TableViewModel.swift in Sources */,
 				DA8C857A29238CE20016D814 /* StorageManager.swift in Sources */,
 			);
