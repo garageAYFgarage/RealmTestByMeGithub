@@ -11,13 +11,15 @@ import RealmSwift
 
 final class TasksViewController: UITableViewController {
     
+    let button = UIButton()
+    
     var delegate: TaskListViewController?
     var currentList: TaskList!
     var currentTasks: Results<Task>!
     var completedTasks: Results<Task>!
     
     //MARK: - Properties
-    private let viewModelTasks: TasksViewModelProtocol
+    var viewModelTasks: TasksViewModelProtocol
     
     //MARK: - LifeCycle
     init(viewModelTasks: TasksViewModelProtocol) {
@@ -38,19 +40,11 @@ final class TasksViewController: UITableViewController {
         
         setupUI()
         configureItems()
-        
-    }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        2
     }
      
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         section == 0 ? currentTasks.count : completedTasks.count
-    }
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        section == 0 ? "CURRENT TASK" : "COMPLETED TASK"
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,9 +56,29 @@ final class TasksViewController: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let rootViewController = EditingTaskViewController()
+        rootViewController.taskDescription = viewModelTasks.currentList?.tasks[indexPath.row].name ?? ""
+        rootViewController.indexPath = indexPath
+        rootViewController.taskList = viewModelTasks.currentList
+        rootViewController.reloadTable = { [weak self] in
+            self?.tableView.reloadData()
+        }
+        let navigationViewController = UINavigationController(rootViewController: rootViewController)
+        navigationViewController.modalPresentationStyle = .fullScreen
+        present(navigationViewController, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+                StorageManager.shared.deleteTask(self.currentList, at: indexPath)
+            tableView.reloadData()
+        }
+    }
+    
     private func setupUI() {
         title = currentList.name
-        view.backgroundColor = .green
+        view.backgroundColor = .secondarySystemBackground
     }
     
     private func configureItems() {

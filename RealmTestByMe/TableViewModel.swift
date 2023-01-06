@@ -21,7 +21,7 @@ protocol TableViewModelProtocol {
 final class TableViewModel: TableViewModelProtocol {
     
     var taskLists: Results<TaskList>?
-    var dataSource: Results<TaskList>? 
+    var dataSource: Results<TaskList>?
     
     init() {
         self.dataSource = realm.objects(TaskList.self)
@@ -32,12 +32,18 @@ final class TableViewModel: TableViewModelProtocol {
     }
     
     func getCellTitle(at indexPath: IndexPath) -> String {
-        "\(dataSource?[indexPath.row].name ?? "")"    }
+        if ((dataSource?.count ?? 0) - 1 >= indexPath.row) {
+            return "\(dataSource?[indexPath.row].name ?? "")"
+        } else {
+            return ""
+        }
+    }
     
     func selectedElement(at indexPath: IndexPath) -> String {
-        "\(dataSource?[indexPath.row].name ?? "")"
+        if ((dataSource?.count ?? 0) - 1 >= indexPath.row) {
+            return "\(dataSource?[indexPath.row].name ?? "")"
+        } else {
+            return ""
+        }
     }
-
 }
-
-

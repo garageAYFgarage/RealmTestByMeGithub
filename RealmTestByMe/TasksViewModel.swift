@@ -9,7 +9,9 @@ import Foundation
 import RealmSwift
 
 protocol TasksViewModelProtocol {
-        
+    
+    var currentList: TaskList? {get set}
+    var dataSource: Results<Task>? {get set}
     func getCellTitle(at indexPath: IndexPath) -> String
     func selectedElement(at indexPath: IndexPath) -> String
     
@@ -18,6 +20,7 @@ protocol TasksViewModelProtocol {
 final class TasksViewModel: TasksViewModelProtocol {
     
     var dataSource: Results<Task>?
+    var currentList: TaskList?
     
     init() {
         self.dataSource = realm.objects(Task.self)
@@ -32,6 +35,10 @@ final class TasksViewModel: TasksViewModelProtocol {
     }
     
     func selectedElement(at indexPath: IndexPath) -> String {
+        "\(dataSource?[indexPath.row].name ?? "")"
+    }
+    
+    func deletedElement(at indexPath: IndexPath) -> String {
         "\(dataSource?[indexPath.row].name ?? "")"
     }
 }

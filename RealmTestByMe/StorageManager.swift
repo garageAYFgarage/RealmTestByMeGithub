@@ -16,28 +16,34 @@ class StorageManager {
     
     private init() {}
     
-    func saveTaskLists(_ taskLists: [TaskList]) {
-        try! realm.write {
-            realm.add(taskLists)
-        }
-    }
-    
     func saveTaskList(_ taskLists: TaskList) {
         try! realm.write {
             realm.add(taskLists)
         }
     }
     
-    func saveTask(_ task: Task) {
-        try! realm.write {
-            realm.add(task)
-        }
-    }
     
     func update(_ taskList: TaskList, _ task: Task) {
         try! realm.write {
             taskList.tasks.insert(task, at: 0)
-            //taskList.tasks.append(task)
+        }
+    }
+    
+    func deleteTaskList(_ taskLists: TaskList) {
+        try! realm.write {
+            realm.delete(taskLists)
+        }
+    }
+    
+    func deleteTask(_ taskList: TaskList, at indexPath: IndexPath) {
+        try! realm.write {
+            taskList.tasks.remove(at: indexPath.row)
+        }
+    }
+    
+    func editTask(_ taskList: TaskList, at indexPath: IndexPath, with name: String) {
+        try! realm.write {
+            taskList.tasks[indexPath.row].name = name
         }
     }
     
