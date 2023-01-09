@@ -11,12 +11,13 @@ import RealmSwift
 
 final class TasksViewController: UITableViewController {
     
-    let button = UIButton()
-    
     var delegate: TaskListViewController?
     var currentList: TaskList!
     var currentTasks: Results<Task>!
     var completedTasks: Results<Task>!
+    
+    //MARK: - UIElements
+    let button = UIButton()
     
     //MARK: - Properties
     var viewModelTasks: TasksViewModelProtocol
@@ -26,6 +27,7 @@ final class TasksViewController: UITableViewController {
         self.viewModelTasks = viewModelTasks
         super.init(nibName: nil, bundle: nil)
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -33,16 +35,22 @@ final class TasksViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TasksCell")
-                
-        currentTasks = currentList.tasks.filter("isComplete == false")
-        completedTasks = currentList.tasks.filter("isComplete == true")
-        
+        setupTableView()
+        setupTasks()
         setupUI()
         configureItems()
-    
+        
     }
-     
+    
+    private func setupTableView() {
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "TasksCell")
+    }
+    
+    private func setupTasks() {
+        currentTasks = currentList.tasks.filter("isComplete == false")
+        completedTasks = currentList.tasks.filter("isComplete == true")
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         section == 0 ? currentTasks.count : completedTasks.count
     }
@@ -52,18 +60,19 @@ final class TasksViewController: UITableViewController {
         
         let task = indexPath.section == 0 ? currentTasks[indexPath.row] : completedTasks[indexPath.row]
         cell.textLabel?.text = task.name
-    
+        
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let rootViewController = EditingTaskViewController()
-        rootViewController.taskDescription = viewModelTasks.currentList?.tasks[indexPath.row].name ?? ""
-        rootViewController.indexPath = indexPath
-        rootViewController.taskList = viewModelTasks.currentList
-        rootViewController.reloadTable = { [weak self] in
+        rootViewController.viewModel.taskDescription = viewModelTasks.currentList?.tasks[indexPath.row].name ?? ""
+        rootViewController.viewModel.indexPath = indexPath
+        rootViewController.viewModel.taskList = viewModelTasks.currentList
+        rootViewController.viewModel.reloadTable = { [weak self] in
             self?.tableView.reloadData()
         }
+        
         let navigationViewController = UINavigationController(rootViewController: rootViewController)
         navigationViewController.modalPresentationStyle = .fullScreen
         present(navigationViewController, animated: true)
@@ -71,7 +80,7 @@ final class TasksViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-                StorageManager.shared.deleteTask(self.currentList, at: indexPath)
+            viewModelTasks.deleteTask(currentList: currentList, indexPath: indexPath)
             tableView.reloadData()
         }
     }
@@ -95,23 +104,24 @@ final class TasksViewController: UITableViewController {
         alert.addTextField { field in
             field.placeholder = "Task Name"
         }
+        
         alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { (_) in
             if let field = alert.textFields?.first {
                 if let text = field.text, !text.isEmpty {
                     let newTask = Task()
                     newTask.name = text
-                    DispatchQueue.main.async {
-                        StorageManager.shared.update(self.currentList, newTask)
-                        self.tableView.reloadData()
+                    DispatchQueue.main.async { [weak self] in
+                        if let currentList = self?.currentList {
+                            self?.viewModelTasks.updateTasks(currentList: currentList, newTask: newTask)
+                            self?.tableView.reloadData()
+                        }
                     }
-                    print(text)
                 }
             }
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                                        
-                                        present(alert, animated: true)
-                                        }
+        present(alert, animated: true)
+    }
     
 }
 

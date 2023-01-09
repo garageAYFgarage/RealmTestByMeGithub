@@ -22,7 +22,6 @@ class StorageManager {
         }
     }
     
-    
     func update(_ taskList: TaskList, _ task: Task) {
         try! realm.write {
             taskList.tasks.insert(task, at: 0)

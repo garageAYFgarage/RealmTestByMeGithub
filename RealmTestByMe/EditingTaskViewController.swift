@@ -10,22 +10,27 @@ import UIKit
 class EditingTaskViewController: UIViewController {
     
     let myTextField: UITextField = UITextField(frame: CGRect(x: 10, y: 100, width: 410, height: 780))
-    var taskDescription = ""
-    var indexPath: IndexPath?
-    var taskList: TaskList?
-    var reloadTable: (()->Void)?
+    let viewModel = EditingTaskViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .secondarySystemBackground
-        myTextField.backgroundColor = .systemBackground
+        setupViews()
         setupTextField()
         displayMyTextField()
         
     }
     
-    func displayMyTextField() {
+    private func setupViews() {
+        view.backgroundColor = .secondarySystemBackground
+        myTextField.backgroundColor = .systemBackground
+    }
+    
+    private func setupTextField() {
+        myTextField.text = viewModel.taskDescription
+    }
+    
+    private func displayMyTextField() {
         
         myTextField.placeholder = "Edit task"
         myTextField.textAlignment = .center
@@ -40,13 +45,11 @@ class EditingTaskViewController: UIViewController {
     }
     
     @objc private func saveEditedTask() {
-        StorageManager.shared.editTask(taskList!, at: indexPath!, with: myTextField.text ?? "")
-        reloadTable?()
+        if let indexPath = viewModel.indexPath, let text = myTextField.text{
+            viewModel.saveEditedTask(indexPath: indexPath, text: text)
+        }
+        
         dismiss(animated: true, completion: nil)
-    }
-    
-    func setupTextField() {
-        myTextField.text = taskDescription
     }
     
 }

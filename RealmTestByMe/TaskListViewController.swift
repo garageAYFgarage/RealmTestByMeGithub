@@ -26,6 +26,7 @@ final class TaskListViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -35,17 +36,17 @@ final class TaskListViewController: UIViewController {
         
         setupUI()
         setupLayout()
+        setupTableView()
         configureItems()
         
     }
 
-    private func setupUI() {
-        view.backgroundColor = .purple
-        
+    private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = .clear
-        
+    }
+    
+    private func setupUI() {
         navigationController?.navigationBar.backgroundColor = .secondarySystemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Task List"
@@ -91,10 +92,8 @@ final class TaskListViewController: UIViewController {
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
                                         present(alert, animated: true)
-        
                                         }
     }
-
 
 //MARK: - Extensions
 extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -102,28 +101,26 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.numberOfRows
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = viewModel.getCellTitle(at: indexPath)
         cell.contentView.backgroundColor = .systemBackground
         return cell
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let viewModelTasks = TasksViewModel()
-        let tasksVC = TasksViewController(viewModelTasks: viewModelTasks)
+        let tasksViewModel = TasksViewModel()
+        let tasksVC = TasksViewController(viewModelTasks: tasksViewModel)
         tasksVC.viewModelTasks.currentList = viewModel.dataSource?[indexPath.row]
         tasksVC.currentList = viewModel.dataSource?[indexPath.row]
         navigationController?.pushViewController(tasksVC, animated: true)
     }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            
-            if let dataSource = viewModel.dataSource {
-                StorageManager.shared.deleteTaskList(dataSource[indexPath.row])
-            }
-            
+            viewModel.deleteTask(by: indexPath)
             tableView.reloadData()
-            
         }
     }
 }
